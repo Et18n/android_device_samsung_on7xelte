@@ -61,10 +61,6 @@ jobs:
         run: |
           git clone https://github.com/Et18n/android_vendor_samsung_on7xelte \
             vendor/samsung/on7xelte --depth=1
-        run: |
-          # TODO: Replace Et18n with your GitHub username
-          git clone https://github.com/Et18n/android_vendor_samsung_on7xelte \
-            vendor/samsung/on7xelte --depth=1
 
       - name: Set up build
         run: |
