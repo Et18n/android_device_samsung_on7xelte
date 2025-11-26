@@ -1,0 +1,108 @@
+name: Build LineageOS for Galaxy J7 Prime
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch: # Allows manual triggering from Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # 6 hour timeout
+
+    steps:
+      - name: Checkout device tree
+        uses: actions/checkout@v3
+        with:
+          path: device/samsung/on7xelte
+
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison build-essential ccache curl flex \
+            g++-multilib gcc-multilib git gnupg gperf imagemagick \
+            lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool \
+            libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 \
+            libxml2-utils lzop pngcrush rsync schedtool squashfs-tools \
+            xsltproc zip zlib1g-dev openjdk-11-jdk python3 python-is-python3
+
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: lineage-on7xelte
+          max-size: 8G
+
+      - name: Initialize repo
+        run: |
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          export PATH=~/bin:$PATH
+
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          repo init -u https://github.com/LineageOS/android.git -b lineage-18.1 --depth=1
+
+      - name: Sync source (minimal)
+        run: |
+          export PATH=~/bin:$PATH
+          repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j$(nproc --all)
+
+      - name: Clone kernel source
+        run: |
+          # TODO: Replace Et18n with your GitHub username
+          git clone https://github.com/Et18n/android_kernel_samsung_exynos7870 \
+            kernel/samsung/exynos7870 --depth=1
+
+      - name: Clone vendor blobs
+        run: |
+          # TODO: Replace Et18n with your GitHub username
+          git clone https://github.com/Et18n/android_vendor_samsung_on7xelte \
+            vendor/samsung/on7xelte --depth=1
+
+      - name: Set up build
+        run: |
+          export USE_CCACHE=1
+          export CCACHE_EXEC=/usr/bin/ccache
+          source build/envsetup.sh
+          lunch lineage_on7xelte-userdebug
+
+      - name: Build ROM
+        run: |
+          export USE_CCACHE=1
+          source build/envsetup.sh
+          lunch lineage_on7xelte-userdebug
+          mka bacon -j$(nproc --all)
+
+      - name: Get date for artifact name
+        id: date
+        run: echo "date=$(date +%Y%m%d)" >> $GITHUB_OUTPUT
+
+      - name: Upload ROM
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: lineage-18.1-on7xelte-${{ steps.date.outputs.date }}
+          path: out/target/product/on7xelte/lineage-*.zip
+          retention-days: 30
+
+      - name: Upload recovery image
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: recovery-on7xelte-${{ steps.date.outputs.date }}
+          path: out/target/product/on7xelte/recovery.img
+          retention-days: 30
+
+      - name: Upload build log
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: build-log
+          path: |
+            out/error.log
+            out/verbose.log
+          retention-days: 7

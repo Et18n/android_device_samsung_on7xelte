@@ -1,0 +1,33 @@
+# Bluetooth
+/dev/ttySAC0                    u:object_r:hci_attach_dev:s0
+
+# Camera
+/dev/video[0-9]*                u:object_r:camera_device:s0
+
+# Graphics
+/dev/mali0                      u:object_r:gpu_device:s0
+/dev/ion                        u:object_r:ion_device:s0
+
+# GPS
+/dev/ttySAC1                    u:object_r:gps_device:s0
+
+# RIL
+/dev/umts_boot0                 u:object_r:radio_device:s0
+/dev/umts_ipc0                  u:object_r:radio_device:s0
+
+# Sensors
+/dev/ssp_sensorhub              u:object_r:sensors_device:s0
+
+# EFS
+/efs/bluetooth(/.*)?            u:object_r:bluetooth_efs_file:s0
+/efs/FactoryApp(/.*)?           u:object_r:app_efs_file:s0
+/efs/imei(/.*)?                 u:object_r:imei_efs_file:s0
+/efs/wifi(/.*)?                 u:object_r:wifi_efs_file:s0
+
+# Data
+/data/vendor/camera(/.*)?       u:object_r:camera_data_file:s0
+/data/vendor/wifi(/.*)?         u:object_r:wifi_data_file:s0
+
+# Vendor bins
+/vendor/bin/gpsd                u:object_r:gpsd_exec:s0
+/vendor/bin/hw/android\.hardware\.sensors@1\.0-service    u:object_r:hal_sensors_default_exec:s0

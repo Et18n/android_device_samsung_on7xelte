@@ -1,0 +1,38 @@
+# Allow system to access sensor service
+
+allow system_app sensorservice_service:service_manager find;
+
+# Allow system to access tee
+
+allow system_app tee_device:chr_file rw_file_perms;
+
+# Allow bluetooth
+
+allow bluetooth self:capability { net_admin net_raw };
+allow bluetooth bluetooth_data_file:dir create_dir_perms;
+allow bluetooth bluetooth_data_file:file create_file_perms;
+
+# Allow mediaserver to access camera
+
+allow mediaserver camera_device:chr_file rw_file_perms;
+allow mediaserver sysfs:file rw_file_perms;
+
+# Allow surfaceflinger to access graphics
+
+allow surfaceflinger gpu_device:chr_file rw_file_perms;
+allow surfaceflinger graphics_device:dir search;
+allow surfaceflinger graphics_device:chr_file rw_file_perms;
+
+# Allow vold to access external storage
+
+allow vold sdcard_type:dir create_dir_perms;
+allow vold sdcard_type:file create_file_perms;
+
+# Allow system_server to access sensors
+
+allow system_server sensors_device:chr_file rw_file_perms;
+
+# Allow radio to access RIL
+
+allow rild radio_device:chr_file rw_file_perms;
+allow rild radio_prop:property_service set;

@@ -1,0 +1,63 @@
+import /init.exynos7870.usb.rc
+
+on early-init
+    mount debugfs /sys/kernel/debug /sys/kernel/debug mode=755
+
+on init
+    # Set permissions for persist partition
+    mkdir /persist 0771 system system
+
+on fs
+    mount_all /fstab.exynos7870
+    setprop ro.crypto.fuse_sdcard true
+
+on post-fs
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
+
+on post-fs-data
+    # Permissions for bluetooth
+    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
+    chown bluetooth bluetooth ro.bt.bdaddr_path
+    chown bluetooth bluetooth /dev/ttySAC0
+    chmod 0660 /dev/ttySAC0
+    
+    # EFS
+    mkdir /efs/bluetooth 0775 radio system
+    chown radio system /efs
+    chmod 0771 /efs
+
+    # Camera
+    mkdir /data/vendor/camera 0770 cameraserver system
+
+    # Wi-Fi
+    mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
+
+on boot
+    # Permissions for backlight
+    chown system system /sys/class/backlight/panel/brightness
+    chmod 0664 /sys/class/backlight/panel/brightness
+
+    # Permissions for touchscreen
+    chown system radio /sys/class/sec/tsp/cmd
+
+    # Permissions for GPIO
+    chown system system /sys/class/leds/led_r/brightness
+    chown system system /sys/class/leds/led_g/brightness
+    chown system system /sys/class/leds/led_b/brightness
+
+    # Permissions for sensors
+    chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
+    chown system radio /sys/class/sensors/gyro_sensor/power_on
+    chown system radio /sys/class/sensors/gyro_sensor/power_off
+    chown system radio /sys/class/sensors/gyro_sensor/temperature
+
+# Service definitions
+service vendor.gpsd /vendor/bin/gpsd -c /vendor/etc/gps.xml
+    class main
+    user gps
+    group system inet net_raw
+    seclabel u:r:gpsd:s0

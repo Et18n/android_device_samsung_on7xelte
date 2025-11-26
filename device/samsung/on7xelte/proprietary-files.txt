@@ -1,0 +1,62 @@
+# Audio
+vendor/lib/hw/audio.primary.exynos7870.so
+vendor/lib64/hw/audio.primary.exynos7870.so
+vendor/lib/libaudioroute.so
+vendor/lib/libaudiopolicy.so
+vendor/lib/libtinyalsa.so
+vendor/lib/libtinycompress.so
+
+# Bluetooth
+vendor/firmware/bcm4343A0_V0054.0303.hcd
+vendor/lib/hw/bluetooth.default.so
+vendor/lib64/hw/bluetooth.default.so
+
+# Camera
+vendor/lib/hw/camera.exynos5.so
+vendor/lib/libexynoscamera.so
+vendor/lib/libexynoscamera3.so
+vendor/lib64/libexynoscamera.so
+vendor/lib64/libexynoscamera3.so
+
+# DRM
+vendor/lib/liboemcrypto.so
+vendor/lib/mediadrm/libwvdrmengine.so
+
+# GPS
+vendor/bin/gpsd
+vendor/lib64/hw/gps.default.so
+vendor/etc/gps.xml
+
+# Graphics
+vendor/lib/egl/libGLES_mali.so
+vendor/lib/hw/gralloc.exynos5.so
+vendor/lib/hw/hwcomposer.exynos5.so
+vendor/lib/libion_exynos.so
+vendor/lib/libMali.so
+vendor/lib64/egl/libGLES_mali.so
+vendor/lib64/hw/gralloc.exynos5.so
+vendor/lib64/hw/hwcomposer.exynos5.so
+vendor/lib64/libion_exynos.so
+vendor/lib64/libMali.so
+
+# Media
+vendor/lib/libOMX.Exynos.*.so
+vendor/lib/libstagefrighthw.so
+
+# RIL
+vendor/lib64/libsec-ril.so
+vendor/lib64/libsecnativefeature.so
+vendor/lib64/libsecril-client.so
+
+# Sensors
+vendor/lib/hw/sensors.exynos7870.so
+vendor/lib64/hw/sensors.exynos7870.so
+vendor/lib/libsensorlistener.so
+vendor/lib64/libsensorlistener.so
+
+# WiFi
+vendor/etc/wifi/bcmdhd_apsta.bin
+vendor/etc/wifi/bcmdhd_mfg.bin
+vendor/etc/wifi/bcmdhd_sta.bin
+vendor/etc/wifi/nvram_net.txt
+vendor/etc/wifi/nvram_mfg.txt
