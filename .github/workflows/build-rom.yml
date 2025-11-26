@@ -53,11 +53,14 @@ jobs:
 
       - name: Clone kernel source
         run: |
-          # TODO: Replace Et18n with your GitHub username
-          git clone https://github.com/Et18n/android_kernel_samsung_exynos7870 \
-            kernel/samsung/exynos7870 --depth=1
+          # Use the original kernel source directly
+          git clone --depth=1 https://github.com/exynos7870/android_kernel_samsung_exynos7870.git \
+            kernel/samsung/exynos7870
 
       - name: Clone vendor blobs
+        run: |
+          git clone https://github.com/Et18n/android_vendor_samsung_on7xelte \
+            vendor/samsung/on7xelte --depth=1
         run: |
           # TODO: Replace Et18n with your GitHub username
           git clone https://github.com/Et18n/android_vendor_samsung_on7xelte \
