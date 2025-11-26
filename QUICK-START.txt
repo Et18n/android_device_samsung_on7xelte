@@ -1,0 +1,77 @@
+╔══════════════════════════════════════════════════════════════╗
+║     ORACLE CLOUD ROM BUILD - QUICK REFERENCE CARD            ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 CHECKLIST:
+
+□ Step 1: Create Account (5 min)
+  → https://www.oracle.com/cloud/free/
+  → Sign up, verify email, add credit card (won't charge)
+
+□ Step 2: Create VM (3 min)
+  → Compute → Instances → Create Instance
+  → Name: lineageos-builder
+  → Image: Ubuntu 22.04
+  → Shape: VM.Standard.A1.Flex (4 OCPUs, 24GB RAM)
+  → Boot Volume: 200 GB
+  → Download SSH keys!
+  → Copy Public IP: ___.___.___.___ (write it here!)
+
+□ Step 3: Connect (1 min)
+  → mv ~/Downloads/ssh-key-*.key ~/.ssh/oracle-vm.key
+  → chmod 600 ~/.ssh/oracle-vm.key
+  → ssh -i ~/.ssh/oracle-vm.key ubuntu@YOUR_VM_IP
+
+□ Step 4: Setup (2 hours)
+  → wget https://raw.githubusercontent.com/Et18n/android_device_samsung_on7xelte/main/oracle-vm-setup.sh
+  → chmod +x oracle-vm-setup.sh
+  → ./oracle-vm-setup.sh
+  → Go have lunch! ☕
+
+□ Step 5: Build (3-4 hours)
+  → screen -S build
+  → cd ~/lineageos
+  → source build/envsetup.sh
+  → lunch lineage_on7xelte-userdebug
+  → mka bacon -j$(nproc)
+  → Press Ctrl+A then D to detach
+  → Go watch a movie! 🎬
+
+□ Step 6: Download ROM
+  → scp -i ~/.ssh/oracle-vm.key ubuntu@YOUR_VM_IP:~/lineageos/out/target/product/on7xelte/lineage-*.zip ~/Downloads/
+
+□ Step 7: Flash to Phone
+  → Boot to TWRP recovery
+  → Wipe: System, Data, Cache, Dalvik
+  → Install: lineage-*.zip
+  → Reboot and enjoy! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+⏱️  TOTAL TIME: ~6-7 hours (mostly automated)
+💰 COST: $0 (completely free forever)
+📁 YOUR LOCAL STORAGE USED: ~5 MB (just the ROM file afterward)
+
+═══════════════════════════════════════════════════════════════
+
+🆘 HELP COMMANDS:
+
+Check if setup is done:
+  ssh -i ~/.ssh/oracle-vm.key ubuntu@YOUR_VM_IP "ls ~/lineageos/device/samsung/"
+
+Reattach to build:
+  ssh -i ~/.ssh/oracle-vm.key ubuntu@YOUR_VM_IP
+  screen -r build
+
+Check build progress:
+  tail -f ~/lineageos/out/verbose.log
+
+Monitor system:
+  htop
+
+═══════════════════════════════════════════════════════════════
+
+📖 FULL GUIDE: See ORACLE-SETUP-COMPLETE.md
+🔗 REPO: https://github.com/Et18n/android_device_samsung_on7xelte
+
+═══════════════════════════════════════════════════════════════
