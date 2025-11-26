@@ -81,7 +81,7 @@ jobs:
         run: echo "date=$(date +%Y%m%d)" >> $GITHUB_OUTPUT
 
       - name: Upload ROM
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: lineage-18.1-on7xelte-${{ steps.date.outputs.date }}
@@ -89,7 +89,7 @@ jobs:
           retention-days: 30
 
       - name: Upload recovery image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: recovery-on7xelte-${{ steps.date.outputs.date }}
@@ -97,7 +97,7 @@ jobs:
           retention-days: 30
 
       - name: Upload build log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: build-log
