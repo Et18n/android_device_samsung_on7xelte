@@ -26,10 +26,22 @@ if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
 
 ANDROID_ROOT="${MY_DIR}/../../.."
 
+# Check if we have the full LineageOS source
 HELPER="${ANDROID_ROOT}/tools/extract-utils/extract_utils.sh"
 if [ ! -f "${HELPER}" ]; then
-    echo "Unable to find helper script at ${HELPER}"
-    exit 1
+    echo "========================================"
+    echo "LineageOS source not found!"
+    echo "========================================"
+    echo ""
+    echo "This script requires the full LineageOS source tree."
+    echo "Since you're using GitHub Actions, you don't need to run this locally."
+    echo ""
+    echo "Options:"
+    echo "1. Extract files manually and place in vendor/samsung/on7xelte/proprietary/"
+    echo "2. Build with GitHub Actions (will handle extraction)"
+    echo "3. Download full LineageOS source (80GB) and run this script"
+    echo ""
+    exit 0
 fi
 source "${HELPER}"
 
